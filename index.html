@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>반응형 고정 버튼</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #222;
+            color: #fff;
+        }
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        footer {
+            background: #000;
+            color: #777;
+            padding: 20px;
+            text-align: left;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .floating-button {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            background-color: #ff4500;
+            color: #fff;
+            padding: 20px 40px;
+            border-radius: 40px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-decoration: none;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            min-width: 600px;
+            justify-content: space-between;
+            word-wrap: break-word; /* 단어 기준으로 줄바꿈 */
+            word-break: keep-all; /* 단어가 중간에서 끊기지 않도록 설정 */
+        }
+        .floating-button:hover {
+            background-color: #e03d00;
+        }
+        .countdown {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+            word-wrap: break-word;
+            word-break: keep-all;
+        }
+        .countdown .time {
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-left: 5px;
+            word-wrap: break-word;
+            word-break: keep-all;
+        }
+        .text {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+            word-wrap: break-word;
+            word-break: keep-all;
+        }
+        .text .main {
+            font-size: 1.6rem;
+        }
+        .text .cta {
+            font-size: 1.4rem;
+        }
+
+        /* 반응형 스타일 */
+        @media (max-width: 768px) {
+            .floating-button {
+                padding: 15px 20px;
+                min-width: 90%;
+                font-size: 1.2rem;
+                flex-wrap: wrap; /* 버튼 내부 요소 줄바꿈 허용 */
+            }
+            .countdown .time {
+                font-size: 1.4rem;
+            }
+            .text .main {
+                font-size: 1.4rem;
+            }
+            .text .cta {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .floating-button {
+                padding: 10px 15px;
+                min-width: 95%;
+                font-size: 1rem;
+                flex-direction: column;
+                text-align: center;
+                flex-wrap: wrap; /* 요소 줄바꿈 */
+            }
+            .countdown {
+                margin-bottom: 10px;
+            }
+            .countdown .time {
+                font-size: 1.2rem;
+            }
+            .text .main {
+                font-size: 1.2rem;
+            }
+            .text .cta {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 고정 버튼 -->
+    <a href="https://example.com" target="_blank" class="floating-button" id="floatingButton">
+        <div class="countdown">
+            <span>⏰</span>
+            <span class="time" id="floatingTimeLeft">6일 11시간 54분 30초</span>
+        </div>
+        <div class="text">
+            <div class="main">🔥교육 신청 폭주!🔥</div>
+            <div class="cta">자리가 얼마 안 남았어요! 교육 신청하기 ></div>
+        </div>
+    </a>
+
+    <script>
+        // 고정 버튼 타이머 설정
+        (function () {
+            const floatingTargetDate = new Date();
+            floatingTargetDate.setDate(floatingTargetDate.getDate() + 7); // 현재 날짜로부터 7일 후
+
+            function updateFloatingCountdown() {
+                const now = new Date();
+                const diff = floatingTargetDate - now;
+
+                if (diff <= 0) {
+                    document.getElementById('floatingTimeLeft').innerText = "0일 0시간 0분 0초";
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('floatingTimeLeft').innerText = ${days}일 ${hours}시간 ${minutes}분 ${seconds}초;
+            }
+
+            setInterval(updateFloatingCountdown, 1000);
+            updateFloatingCountdown();
+        })();
+    </script>
+</body>
+</html>
